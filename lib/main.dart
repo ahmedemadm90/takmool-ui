@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
         builder: (context, orientation, screenType) {
           return Scaffold(
               body: SafeArea(
-            child: HomeScreen(),
+            child: LoginScreen(),
           ));
         },
       ),

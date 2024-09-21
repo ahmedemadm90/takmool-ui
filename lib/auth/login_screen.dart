@@ -13,6 +13,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController passwordController = TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   bool rememberMe = false;
+  bool isPasswordVisible = false; // Password visibility toggle
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +39,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Widget _buildWelcomeBanner() {
     return Container(
-      width: 80.w,
+      width: 90.w,
       height: 25.h,
       decoration: BoxDecoration(
         color: Colors.white.withOpacity(.2),
@@ -147,26 +148,47 @@ class _LoginScreenState extends State<LoginScreen> {
             },
           ),
           SizedBox(height: 1.h),
-          _buildTextFormField(
-            controller: passwordController,
-            label: 'Password',
-            obscureText: true,
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Please enter your password';
-              }
-              if (value.length < 6) {
-                return 'Password must be at least 6 characters long';
-              }
-              return null;
-            },
-          ),
+          _buildPasswordField(),
           SizedBox(height: 2.h),
           _buildRememberMeAndForgotPassword(),
           SizedBox(height: 2.h),
           _buildSignInButton(),
         ],
       ),
+    );
+  }
+
+  Widget _buildPasswordField() {
+    return TextFormField(
+      controller: passwordController,
+      obscureText: !isPasswordVisible, // Toggle password visibility
+      decoration: InputDecoration(
+        labelText: 'Password',
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(5),
+        ),
+        filled: true,
+        fillColor: Colors.white,
+        suffixIcon: IconButton(
+          icon: Icon(
+            isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+          ),
+          onPressed: () {
+            setState(() {
+              isPasswordVisible = !isPasswordVisible; // Toggle state
+            });
+          },
+        ),
+      ),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please enter your password';
+        }
+        if (value.length < 6) {
+          return 'Password must be at least 6 characters long';
+        }
+        return null;
+      },
     );
   }
 
@@ -250,3 +272,4 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 }
+
