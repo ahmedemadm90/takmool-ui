@@ -19,19 +19,17 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Container(
-            height: 100.h,
-            width: 100.w,
-            color: HexColor('#003399'),
-            child: Column(
-              children: [
-                SizedBox(height: 5.h),
-                _buildWelcomeBanner(),
-                SizedBox(height: 5.h),
-                _buildLoginForm(),
-              ],
-            ),
+        child: Container(
+          height: 100.h,
+          width: 100.w,
+          color: HexColor('#003399'),
+          child: Column(
+            children: [
+              SizedBox(height: 5.h),
+              _buildWelcomeBanner(),
+              SizedBox(height: 5.h),
+              _buildLoginForm(),
+            ],
           ),
         ),
       ),
@@ -40,8 +38,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Widget _buildWelcomeBanner() {
     return Container(
-      width: 70.w,
-      height: 30.h,
+      width: 80.w,
+      height: 25.h,
       decoration: BoxDecoration(
         color: Colors.white.withOpacity(.2),
         borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -85,16 +83,14 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
         child: Padding(
           padding: const EdgeInsets.all(15.0),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: 1.h),
-                _buildLoginTitle(),
-                SizedBox(height: 1.h),
-                _buildLoginFormFields(),
-              ],
-            ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: 1.h),
+              _buildLoginTitle(),
+              SizedBox(height: 1.h),
+              _buildLoginFormFields(),
+            ],
           ),
         ),
       ),
