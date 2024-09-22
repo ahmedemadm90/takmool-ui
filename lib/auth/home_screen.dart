@@ -25,7 +25,6 @@ class HomeScreen extends StatelessWidget {
             SizedBox(height: 4.h),
             Card(
               child: Container(
-                height: 25.h,
                 width: 100.w,
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -81,7 +80,7 @@ class HomeScreen extends StatelessWidget {
   Widget buildHeader() {
     return Container(
       width: 100.w,
-      height: 25.h,
+      height: 20.h,
       color: HexColor('003399'),
       child: Padding(
         padding: EdgeInsets.all(7.w),
@@ -122,9 +121,9 @@ class HomeScreen extends StatelessWidget {
                   CircleAvatar(
                     child: Text(
                       '2',
-                      style: TextStyle(fontSize: 15, color: Colors.white),
+                      style: TextStyle(fontSize: 3.w, color: Colors.white),
                     ),
-                    radius: 11,
+                    radius: 9,
                     backgroundColor: Colors.red,
                   ),
                   IconButton(
@@ -171,7 +170,8 @@ class HomeScreen extends StatelessWidget {
           ),
           SizedBox(height: 2.h),
           Container(
-            width: 60.w,
+            width: 80.w,
+            height: 9.2.h,
             decoration: BoxDecoration(
                 color: HexColor('F3F4F6'),
                 borderRadius: BorderRadiusDirectional.circular(10)),
@@ -262,7 +262,7 @@ class HomeScreen extends StatelessWidget {
                 SnackBar(
                   behavior: SnackBarBehavior.floating,
                   margin: EdgeInsetsDirectional.only(
-                      bottom: 90.h, start: 2.w, end: 2.w),
+                      bottom: 85.h, start: 2.w, end: 2.w),
                   backgroundColor: Colors.green,
                   content: Text('Current Time: $formattedTime'),
                   duration: Duration(seconds: 2),

@@ -16,14 +16,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: ResponsiveSizer(
-        builder: (context, orientation, screenType) {
-          return Scaffold(
-              body: SafeArea(
-            child: LoginScreen(),
-          ));
-        },
-      ),
+      home: ResponsiveSizer(builder: (context,orientation,screenType)=>Scaffold(
+        body: SafeArea(child: HomeScreen()),
+      )),
     );
   }
 }

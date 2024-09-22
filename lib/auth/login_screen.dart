@@ -17,22 +17,17 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: SafeArea(
-        child: Container(
-          height: 100.h,
-          width: 100.w,
-          color: HexColor('#003399'),
-          child: Column(
-            children: [
-              SizedBox(height: 5.h),
-              _buildWelcomeBanner(),
-              SizedBox(height: 5.h),
-              _buildLoginForm(),
-            ],
-          ),
-        ),
+    return Container(
+      height: 100.h,
+      width: 100.w,
+      color: HexColor('#003399'),
+      child: Column(
+        children: [
+          SizedBox(height: 5.h),
+          _buildWelcomeBanner(),
+          SizedBox(height: 5.h),
+          _buildLoginForm(),
+        ],
       ),
     );
   }
