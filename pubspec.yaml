@@ -48,6 +48,7 @@ dependencies:
   sizer: 3.0.3
   quickalert:
   floating_bottom_navigation_bar: ^1.5.2
+  intl: ^0.19.0
 
 dev_dependencies:
   flutter_test:

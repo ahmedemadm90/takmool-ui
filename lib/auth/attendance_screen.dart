@@ -2,11 +2,59 @@ import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:sizer/sizer.dart';
-import 'dart:math';
+import 'package:intl/intl.dart'; // Import for date formatting
 
-class AttendanceScreen extends StatelessWidget {
+class AttendanceScreen extends StatefulWidget {
+  @override
+  _AttendanceScreenState createState() => _AttendanceScreenState();
+}
+
+class _AttendanceScreenState extends State<AttendanceScreen> {
+  DateTime selectedDate = DateTime.now(); // Store the selected date
+
+  // Function to open the date picker and select a month
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: selectedDate, // Current selected date
+      firstDate: DateTime(2000), // Set the range for the picker
+      lastDate: DateTime(2100),
+      helpText: 'Select Date', // Custom text if needed
+      builder: (BuildContext context, Widget? child) {
+        return Theme(
+          data: ThemeData.light().copyWith(
+            primaryColor: HexColor('003399'), // Color for the header background
+            hintColor: Colors.white, // Color for selected dates' text
+            dialogBackgroundColor: HexColor('E5EEFF'), // Background color of the picker
+            colorScheme: ColorScheme.light(
+              primary: HexColor('003399'), // Header color (can also control selected date)
+              onPrimary: Colors.white, // Text color on the header
+              surface: HexColor('E5EEFF'), // Background color of the calendar
+              onSurface: Colors.black, // Text color for unselected dates
+            ),
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                foregroundColor: HexColor('003399'), // Button text color
+              ),
+            ),
+          ),
+          child: child!,
+        );
+      },
+    );
+
+    if (picked != null && picked != selectedDate) {
+      setState(() {
+        selectedDate = picked; // Update the selected date
+      });
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
+    String formattedMonth = DateFormat('MMMM yyyy').format(selectedDate); // Format month and year
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -47,25 +95,21 @@ class AttendanceScreen extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              IconButton(
-                  onPressed: () {},
-                  icon: Icon(IconlyBroken.arrowLeft2)),
-              Row(
-                children: [
-                  Icon(
-                    IconlyBroken.calendar,
-                    color: HexColor('003399'),
-                  ),
-                  SizedBox(width: 2.w),
-                  Text(
-                    'December 2024',
-                    style: TextStyle(color: HexColor('003399')),
-                  ),
-                ],
+              IconButton(onPressed: () {}, icon: Icon(IconlyBroken.arrowLeft2)),
+              GestureDetector(
+                onTap: () => _selectDate(context), // Open date picker on tap
+                child: Row(
+                  children: [
+                    Icon(IconlyBroken.calendar, color: HexColor('003399')),
+                    SizedBox(width: 2.w),
+                    Text(
+                      formattedMonth, // Display formatted month
+                      style: TextStyle(color: HexColor('003399')),
+                    ),
+                  ],
+                ),
               ),
-              IconButton(
-                  onPressed: () {},
-                  icon: Icon(IconlyBroken.arrowRight2)),
+              IconButton(onPressed: () {}, icon: Icon(IconlyBroken.arrowRight2)),
             ],
           ),
           SizedBox(height: 2.h),
@@ -155,7 +199,7 @@ class AttendanceScreen extends StatelessWidget {
                       ),
                       decoration: BoxDecoration(
                         color: HexColor('FEF0C7'),
-                        borderRadius: BorderRadiusDirectional.all(Radius.circular(8))
+                        borderRadius: BorderRadiusDirectional.all(Radius.circular(8)),
                       ),
                     ),
                   );
@@ -207,9 +251,10 @@ class AttendanceScreen extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Transform.rotate(
-                                    child: Icon(Icons.arrow_downward,
-                                        color: Colors.blue, size: 2.h),
-                                    angle: 2 / pi),
+                                  child: Icon(Icons.arrow_downward,
+                                      color: Colors.blue, size: 2.h),
+                                  angle: 2 / 3.14159,
+                                ),
                                 SizedBox(width: 1.w),
                                 Text(
                                   '09:15 am',
@@ -231,7 +276,7 @@ class AttendanceScreen extends StatelessWidget {
                                 Transform.rotate(
                                   child: Icon(Icons.arrow_downward,
                                       color: Colors.blue, size: 2.h),
-                                  angle: -8 / pi,
+                                  angle: -8 / 3.14159,
                                 ),
                                 SizedBox(width: 1.w),
                                 Text(
