@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:sizer/sizer.dart';
 
 class LanguageSelectionScreen extends StatefulWidget {
   @override
@@ -39,33 +40,67 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
             },
             child: Container(
               margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-              padding: EdgeInsets.all(16),
+              padding: EdgeInsets.all(4.w),
               decoration: BoxDecoration(
-                color: selectedLanguage == languages[index]
-                    ? HexColor('#003087')
-                    : Colors.white,
+                color: Colors.white,
                 border: Border.all(
-                  color: HexColor('#D1D5DB'),
+                  color: HexColor('#D1D5DB'), // Border color for the container
                 ),
-                borderRadius: BorderRadius.zero, // Square corners
+                borderRadius: BorderRadius.all(Radius.circular(2.w)), // Square corners
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    languages[index],
-                    style: TextStyle(
-                      fontSize: 18,
+                  Row(
+                    children: [
+                      Stack(
+                        children: [
+                          // Base image
+                          Image.asset(
+                            'assets/images/bluebg.png',
+                            width: 7.w, // Adjust width as needed
+                          ),
+                          // Overlay image based on selected language
+                          Positioned.fill(
+                            child: Image.asset(
+                              languages[index] == 'العربية'
+                                  ? 'assets/images/ar.png'
+                                  : 'assets/images/en.png',
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(width: 8), // Space between image and text
+                      Text(
+                        languages[index],
+                        style: TextStyle(
+                          fontSize: 15.sp,
+                          fontFamily: 'cairo',
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ],
+                  ),
+                  // Check mark with square border
+                  Container(
+                    height: 2.h,
+                    width: 2.h, // Square shape
+                    decoration: BoxDecoration(
+                      color: Colors.transparent, // Keep it transparent
+                      border: Border.all(
+                        color: Colors.black, // Black border for the check mark
+                      ),
+                      borderRadius: BorderRadius.all(Radius.circular(1.w)), // Square corners
+                    ),
+                    child: Icon(
+                      Icons.check,
                       color: selectedLanguage == languages[index]
-                          ? Colors.white
-                          : Colors.black,
+                          ? Colors.black // Black icon if selected
+                          : Colors.white, // White icon if not selected
+                      size: 16.sp, // Adjust size as needed
                     ),
                   ),
-                  if (selectedLanguage == languages[index])
-                    Icon(
-                      Icons.check,
-                      color: Colors.white,
-                    ),
                 ],
               ),
             ),

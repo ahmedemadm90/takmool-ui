@@ -193,7 +193,7 @@ class _SettingScreenState extends State<SettingScreen> {
                         alignment: AlignmentDirectional.center,
                         children: [
                           Image(image: AssetImage('assets/images/bg.png')),
-                          Icon(IconlyBroken.lock),
+                          Icon(IconlyBroken.lock,color: Colors.black,),
                         ],
                       ),
                       title: 'Change Password',
