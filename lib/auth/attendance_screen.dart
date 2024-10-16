@@ -227,9 +227,6 @@ class AttendanceRow extends StatelessWidget {
       },
       children: [
         TableRow(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8),
-          ),
           children: [
             Padding(
               padding: const EdgeInsets.all(8.0),

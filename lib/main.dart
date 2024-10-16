@@ -3,6 +3,7 @@ import 'package:flutter/services.dart'; // Import this for locking orientation
 import 'package:sizer/sizer.dart';
 import 'package:takamool/auth/attendance_screen.dart';
 import 'package:takamool/auth/home_screen.dart';
+import 'package:takamool/auth/setting_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,7 +28,7 @@ class MyApp extends StatelessWidget {
       ),
       home: ResponsiveSizer(
         builder: (context, orientation, screenType) => Scaffold(
-          body: SafeArea(child: AttendanceScreen()),
+          body: SafeArea(child: SettingScreen()),
         ),
       ),
     );
