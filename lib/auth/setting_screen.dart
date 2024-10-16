@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:sizer/sizer.dart';
+import 'package:takamool/auth/lang_screen.dart';
 import 'package:takamool/auth/reset_passwors_screen.dart';
 import 'dart:ui'; // For BackdropFilter
 
@@ -218,7 +219,12 @@ class _SettingScreenState extends State<SettingScreen> {
                       ),
                       title: 'Language',
                       onTap: () {
-                        // Language change functionality
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => LanguageSelectionScreen(),
+                          ),
+                        );
                       },
                     ),
                     Divider(),
