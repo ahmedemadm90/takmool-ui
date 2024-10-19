@@ -61,9 +61,9 @@ class HomeScreen extends StatelessWidget {
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          buildServiceBox('Attendance\nOverview', 'assets/images/icon 1.png'),
+                          buildServiceBox('Attendance\nOverview', 'assets/images/calendar.png'),
                           SizedBox(width: 2.w,),
-                          buildServiceBox('Holidays', 'assets/images/icon 2.png'),
+                          buildServiceBox('Holidays', 'assets/images/holiday.png'),
                         ],
                       )
                     ],
@@ -370,7 +370,7 @@ class HomeScreen extends StatelessWidget {
           alignment: AlignmentDirectional.center,
           children: [
             Image.asset('assets/images/rect.png'),
-            Image.asset(imagePath),
+            Image.asset(imagePath,width: 15.w,),
           ],
         ),
         SizedBox(height: 2.h), // Space between image and text

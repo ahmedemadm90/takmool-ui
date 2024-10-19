@@ -9,14 +9,17 @@ class ResetPasswordScreen extends StatefulWidget {
 }
 
 class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
+  bool _isObscureOldPassword = true; // Toggle for old password visibility
   bool _isObscureNewPassword = true;
   bool _isObscureConfirmPassword = true;
   bool _isDialogOpen = false;
 
   // Method to toggle password visibility
-  void _togglePasswordVisibility(bool isNewPassword) {
+  void _togglePasswordVisibility(bool isOldPassword, bool isNewPassword) {
     setState(() {
-      if (isNewPassword) {
+      if (isOldPassword) {
+        _isObscureOldPassword = !_isObscureOldPassword;
+      } else if (isNewPassword) {
         _isObscureNewPassword = !_isObscureNewPassword;
       } else {
         _isObscureConfirmPassword = !_isObscureConfirmPassword;
@@ -136,25 +139,25 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
         child: Column(
           children: [
             SizedBox(height: 2.h),
-            // Old password field
+            // Old password field with show/hide functionality
             _buildPasswordField(
               labelText: 'Old Password',
-              isObscure: true,
-              toggleVisibility: () {},
+              isObscure: _isObscureOldPassword,
+              toggleVisibility: () => _togglePasswordVisibility(true, false),
             ),
             SizedBox(height: 2.h),
-            // New password field
+            // New password field with show/hide functionality
             _buildPasswordField(
               labelText: 'New Password',
               isObscure: _isObscureNewPassword,
-              toggleVisibility: () => _togglePasswordVisibility(true),
+              toggleVisibility: () => _togglePasswordVisibility(false, true),
             ),
             SizedBox(height: 2.h),
-            // Confirm password field
+            // Confirm password field with show/hide functionality
             _buildPasswordField(
               labelText: 'Confirm Password',
               isObscure: _isObscureConfirmPassword,
-              toggleVisibility: () => _togglePasswordVisibility(false),
+              toggleVisibility: () => _togglePasswordVisibility(false, false),
             ),
             SizedBox(height: 4.h),
             // Change password button

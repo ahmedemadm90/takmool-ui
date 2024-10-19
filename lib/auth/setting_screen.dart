@@ -178,70 +178,69 @@ class _SettingScreenState extends State<SettingScreen> {
               ),
             ),
             SizedBox(height: 2.h),
-            Expanded(
-              child: Container(
-                width: 100.w,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: Column(
-                  children: [
-                    SizedBox(height: 1.h),
-                    ProfileOption(
-                      leadingWidget: Stack(
-                        alignment: AlignmentDirectional.center,
-                        children: [
-                          Image(image: AssetImage('assets/images/bg.png')),
-                          Icon(IconlyBroken.lock,color: Colors.black,),
-                        ],
-                      ),
-                      title: 'Change Password',
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ResetPasswordScreen(),
-                          ),
-                        );
-                      },
+            Container(
+              width: 100.w,
+              height: 25.h,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Column(
+                children: [
+                  SizedBox(height: 1.h),
+                  ProfileOption(
+                    leadingWidget: Stack(
+                      alignment: AlignmentDirectional.center,
+                      children: [
+                        Image(image: AssetImage('assets/images/bg.png')),
+                        Icon(IconlyBroken.lock,color: Colors.black,),
+                      ],
                     ),
-                    Divider(),
-                    ProfileOption(
-                      leadingWidget: Stack(
-                        alignment: AlignmentDirectional.center,
-                        children: [
-                          Image(image: AssetImage('assets/images/bg.png')),
-                          Image(
-                            image: AssetImage('assets/images/translate.png'),
-                          ),
-                        ],
-                      ),
-                      title: 'Language',
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => LanguageSelectionScreen(),
-                          ),
-                        );
-                      },
+                    title: 'Change Password',
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ResetPasswordScreen(),
+                        ),
+                      );
+                    },
+                  ),
+                  Divider(),
+                  ProfileOption(
+                    leadingWidget: Stack(
+                      alignment: AlignmentDirectional.center,
+                      children: [
+                        Image(image: AssetImage('assets/images/bg.png')),
+                        Image(
+                          image: AssetImage('assets/images/translate.png'),
+                        ),
+                      ],
                     ),
-                    Divider(),
-                    ProfileOption(
-                      leadingWidget: Stack(
-                        alignment: AlignmentDirectional.center,
-                        children: [
-                          Image(image: AssetImage('assets/images/bg.png')),
-                          Icon(IconlyBroken.logout, color: Colors.red),
-                        ],
-                      ),
-                      title: 'Log out',
-                      titleColor: Colors.red,
-                      onTap: _showLogoutDialog, // Show the logout confirmation
+                    title: 'Language',
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => LanguageSelectionScreen(),
+                        ),
+                      );
+                    },
+                  ),
+                  Divider(),
+                  ProfileOption(
+                    leadingWidget: Stack(
+                      alignment: AlignmentDirectional.center,
+                      children: [
+                        Image(image: AssetImage('assets/images/bg.png')),
+                        Icon(IconlyBroken.logout, color: Colors.red),
+                      ],
                     ),
-                  ],
-                ),
+                    title: 'Log out',
+                    titleColor: Colors.red,
+                    onTap: _showLogoutDialog, // Show the logout confirmation
+                  ),
+                ],
               ),
             )
           ],
