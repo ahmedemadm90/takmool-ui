@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
       ),
       home: ResponsiveSizer(
         builder: (context, orientation, screenType) => Scaffold(
-          body: SafeArea(child: HomeScreen()),
+          body: SafeArea(child: SettingScreen()),
         ),
       ),
     );

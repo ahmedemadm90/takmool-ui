@@ -180,12 +180,12 @@ class _SettingScreenState extends State<SettingScreen> {
             SizedBox(height: 2.h),
             Container(
               width: 100.w,
-              height: 25.h,
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(16),
               ),
               child: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   SizedBox(height: 1.h),
                   ProfileOption(
@@ -213,7 +213,8 @@ class _SettingScreenState extends State<SettingScreen> {
                       children: [
                         Image(image: AssetImage('assets/images/bg.png')),
                         Image(
-                          image: AssetImage('assets/images/translate.png'),
+                          image: AssetImage('assets/images/changeLang.png'),
+                          width: 6.w,
                         ),
                       ],
                     ),
@@ -240,6 +241,7 @@ class _SettingScreenState extends State<SettingScreen> {
                     titleColor: Colors.red,
                     onTap: _showLogoutDialog, // Show the logout confirmation
                   ),
+                  SizedBox(height: 1.h),
                 ],
               ),
             )

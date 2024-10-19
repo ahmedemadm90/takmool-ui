@@ -62,12 +62,23 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
                           ),
                           // Overlay image based on selected language
                           Positioned.fill(
-                            child: Image.asset(
-                              languages[index] == 'العربية'
-                                  ? 'assets/images/ar.png'
-                                  : 'assets/images/en.png',
+                            child: Container(
+                              width: 2.w,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(50), // Optional: add some border radius
+                              ),
+                              child: Center(
+                                child: Text(
+                                  languages[index] == 'العربية' ? 'Ar' : 'En',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 13.sp, // Optional: adjust font size as needed
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
+
                         ],
                       ),
                       SizedBox(width: 8), // Space between image and text
