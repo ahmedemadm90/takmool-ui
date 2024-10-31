@@ -330,8 +330,6 @@ class AttendanceRow extends StatelessWidget {
     );
   }
 }
-
-
 // Widget for Weekend (Friday) Rows
 class WeekendRow extends StatelessWidget {
   final DateTime day;

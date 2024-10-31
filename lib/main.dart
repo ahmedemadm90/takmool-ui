@@ -4,6 +4,7 @@ import 'package:sizer/sizer.dart';
 import 'package:takamool/auth/attendance_screen.dart';
 import 'package:takamool/auth/home_screen.dart';
 import 'package:takamool/auth/setting_screen.dart';
+import 'package:takamool/requests/requests_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,7 +29,7 @@ class MyApp extends StatelessWidget {
       ),
       home: ResponsiveSizer(
         builder: (context, orientation, screenType) => Scaffold(
-          body: SafeArea(child: SettingScreen()),
+          body: SafeArea(child: RequestsScreen()),
         ),
       ),
     );
