@@ -149,7 +149,6 @@ class _LossAttendanceScreenState extends State<LossAttendanceScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Dropdown for selecting leave type
             Container(
               child: DropdownMenu(
                 label: const Text('Leave Type'),

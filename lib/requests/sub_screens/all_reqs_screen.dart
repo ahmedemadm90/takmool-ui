@@ -15,25 +15,31 @@ class AllReqsScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             AttendanceCard(
-              date: DateTime(2024, 4, 15),
+              startDate: DateTime(2024, 4, 15),
+              endDate: DateTime(2024, 4, 15),
               status: 'Approved',
               type: 'Loss attendance',
               onDelete: () => _showRequestDeleteDialog(context),
-              onEdit: () => _navigateToOperationScreen(context, DateTime(2024, 4, 15), 'Approved', 'Leave In'),
+              onEdit: () => _navigateToOperationScreen(context,
+                  DateTime(2024, 4, 15), 'Approved', 'Leave In', 'Approved'),
             ),
             AttendanceCard(
-              date: DateTime(2024, 5, 10),
+              startDate: DateTime(2024, 4, 15),
+              endDate: DateTime(2024, 4, 15),
               status: 'Pending',
-              type: 'Sick leave',
+              type: 'Leave In',
               onDelete: () => _showRequestDeleteDialog(context),
-              onEdit: () => _navigateToOperationScreen(context, DateTime(2024, 5, 10), 'Pending', 'Leave In'),
+              onEdit: () => _navigateToOperationScreen(context,
+                  DateTime(2024, 5, 10), 'Pending', 'leave-in', 'Pending'),
             ),
             AttendanceCard(
-              date: DateTime(2024, 6, 25),
+              startDate: DateTime(2024, 4, 15),
+              endDate: DateTime(2024, 4, 15),
               status: 'Rejected',
               type: 'Holiday request',
               onDelete: () => _showRequestDeleteDialog(context),
-              onEdit: () => _navigateToOperationScreen(context, DateTime(2024, 6, 25), 'Rejected', 'Leave In'),
+              onEdit: () => _navigateToOperationScreen(context,
+                  DateTime(2024, 6, 25), 'Rejected', 'Leave In', 'Rejected'),
             ),
           ],
         ),
@@ -132,25 +138,28 @@ class AllReqsScreen extends StatelessWidget {
     );
   }
 
-  void _navigateToOperationScreen(BuildContext context, DateTime date, String status, String type) {
+  void _navigateToOperationScreen(BuildContext context, DateTime date,
+      String description, String type, String status) {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => OperationScreen(initialDate: date, initialDescription: status, initialLeaveType: type),
+        builder: (context) => OperationScreen(status: status,),
       ),
     );
   }
 }
 
 class AttendanceCard extends StatelessWidget {
-  final DateTime date;
+  final DateTime startDate;
+  final DateTime endDate;
   final String status;
   final String type;
   final VoidCallback onDelete;
   final VoidCallback onEdit;
 
   AttendanceCard({
-    required this.date,
+    required this.startDate,
+    required this.endDate,
     required this.status,
     required this.type,
     required this.onDelete,
@@ -207,7 +216,7 @@ class AttendanceCard extends StatelessWidget {
                         ),
                         SizedBox(height: 4),
                         Text(
-                          DateFormat('EEEE, MMM dd, yyyy').format(date),
+                          DateFormat('EEEE, MMM dd, yyyy').format(startDate),
                           style: TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
@@ -289,6 +298,7 @@ class AttendanceCard extends StatelessWidget {
           ),
           onPressed: () {
             print("Approved icon clicked");
+            onEdit();
           },
         );
       case 'Pending':
@@ -323,6 +333,7 @@ class AttendanceCard extends StatelessWidget {
               ),
               onPressed: () {
                 print("Add User icon clicked");
+                onEdit();
               },
             ),
             SizedBox(width: 1.w),
