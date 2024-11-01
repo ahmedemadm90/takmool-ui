@@ -3,7 +3,7 @@ import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:sizer/sizer.dart';
 import 'package:intl/intl.dart';
-import 'package:takamool/requests/sub_screens/show_request_data.dart';
+import 'package:takamool/requests/holiday_sub_screens/show_request_data.dart';
 
 class AllReqsScreen extends StatelessWidget {
   @override
@@ -14,32 +14,29 @@ class AllReqsScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            AttendanceCard(
-              startDate: DateTime(2024, 4, 15),
-              endDate: DateTime(2024, 4, 15),
+            HolidayCard(
+              startDate: DateTime(2024, 11, 15),
+              endDate: DateTime(2024, 11, 18),
               status: 'Approved',
-              type: 'Loss attendance',
-              onDelete: () => _showRequestDeleteDialog(context),
-              onEdit: () => _navigateToOperationScreen(context,
-                  DateTime(2024, 4, 15), 'Approved', 'Leave In', 'Approved'),
+              TotalDays: '3 Days',
+              toOperationScreen: () => _navigateToOperationScreen(context,
+                  DateTime(2024, 11, 15), 'Approved', 'Leave In', 'Approved'),
             ),
-            AttendanceCard(
-              startDate: DateTime(2024, 4, 15),
-              endDate: DateTime(2024, 4, 15),
+            HolidayCard(
+              startDate: DateTime(2024, 11, 15),
+              endDate: DateTime(2024, 11, 18),
               status: 'Pending',
-              type: 'Leave In',
-              onDelete: () => _showRequestDeleteDialog(context),
-              onEdit: () => _navigateToOperationScreen(context,
-                  DateTime(2024, 5, 10), 'Pending', 'leave-in', 'Pending'),
+              TotalDays: '3 Days',
+              toOperationScreen: () => _navigateToOperationScreen(context,
+                  DateTime(2024, 11, 10), 'Pending', 'leave-in', 'Pending'),
             ),
-            AttendanceCard(
-              startDate: DateTime(2024, 4, 15),
-              endDate: DateTime(2024, 4, 15),
+            HolidayCard(
+              startDate: DateTime(2024, 11, 15),
+              endDate: DateTime(2024, 11, 18),
               status: 'Rejected',
-              type: 'Holiday request',
-              onDelete: () => _showRequestDeleteDialog(context),
-              onEdit: () => _navigateToOperationScreen(context,
-                  DateTime(2024, 6, 25), 'Rejected', 'Leave In', 'Rejected'),
+              TotalDays: '3 Days',
+              toOperationScreen: () => _navigateToOperationScreen(context,
+                  DateTime(2024, 11, 25), 'Rejected', 'Leave In', 'Rejected'),
             ),
           ],
         ),
@@ -139,7 +136,7 @@ class AllReqsScreen extends StatelessWidget {
   }
 
   void _navigateToOperationScreen(BuildContext context, DateTime date,
-      String description, String type, String status) {
+      String description, String TotalDays, String status) {
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -149,21 +146,19 @@ class AllReqsScreen extends StatelessWidget {
   }
 }
 
-class AttendanceCard extends StatelessWidget {
+class HolidayCard extends StatelessWidget {
   final DateTime startDate;
   final DateTime endDate;
   final String status;
-  final String type;
-  final VoidCallback onDelete;
-  final VoidCallback onEdit;
+  final String TotalDays;
+  final VoidCallback toOperationScreen;
 
-  AttendanceCard({
+  HolidayCard({
     required this.startDate,
     required this.endDate,
     required this.status,
-    required this.type,
-    required this.onDelete,
-    required this.onEdit,
+    required this.TotalDays,
+    required this.toOperationScreen,
   });
 
   @override
@@ -215,12 +210,25 @@ class AttendanceCard extends StatelessWidget {
                           ),
                         ),
                         SizedBox(height: 4),
-                        Text(
-                          DateFormat('EEEE, MMM dd, yyyy').format(startDate),
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                          ),
+                        Row(
+                          children: [
+                            Text(
+                              DateFormat('MMM dd, yyyy').format(startDate),
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(' - '),
+                            Text(
+                              DateFormat('MMM dd, yyyy').format(endDate),
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+
+                          ],
                         ),
                       ],
                     ),
@@ -256,7 +264,7 @@ class AttendanceCard extends StatelessWidget {
                         ),
                         SizedBox(height: 4),
                         Text(
-                          type,
+                          TotalDays,
                           style: TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
@@ -298,7 +306,7 @@ class AttendanceCard extends StatelessWidget {
           ),
           onPressed: () {
             print("Approved icon clicked");
-            onEdit();
+            toOperationScreen();
           },
         );
       case 'Pending':
@@ -306,20 +314,10 @@ class AttendanceCard extends StatelessWidget {
           children: [
             IconButton(
               icon: Icon(
-                IconlyBroken.delete,
+                IconlyBroken.document,
                 size: 5.w,
               ),
-              onPressed: () {
-                onDelete();
-              },
-            ),
-            SizedBox(width: 1.w),
-            IconButton(
-              icon: Icon(
-                IconlyBroken.edit,
-                size: 5.w,
-              ),
-              onPressed: onEdit,
+              onPressed: toOperationScreen,
             ),
           ],
         );
@@ -328,22 +326,12 @@ class AttendanceCard extends StatelessWidget {
           children: [
             IconButton(
               icon: Icon(
-                Icons.refresh,
-                size: 5.w,
-              ),
-              onPressed: () {
-                print("Add User icon clicked");
-                onEdit();
-              },
-            ),
-            SizedBox(width: 1.w),
-            IconButton(
-              icon: Icon(
                 IconlyBroken.document,
                 size: 5.w,
               ),
               onPressed: () {
                 print("Document icon clicked");
+                toOperationScreen();
               },
             ),
           ],

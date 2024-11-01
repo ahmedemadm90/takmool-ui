@@ -4,10 +4,10 @@ import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:sizer/sizer.dart';
 import 'package:intl/intl.dart';
-import 'package:takamool/requests/sub_screens/all_reqs_screen.dart';
-import 'package:takamool/requests/sub_screens/approved_screen.dart';
-import 'package:takamool/requests/sub_screens/pending_screen.dart';
-import 'package:takamool/requests/sub_screens/rejected_screen.dart';
+import 'package:takamool/requests/my_requests_sub_screens/all_reqs_screen.dart';
+import 'package:takamool/requests/my_requests_sub_screens/approved_screen.dart';
+import 'package:takamool/requests/my_requests_sub_screens/pending_screen.dart';
+import 'package:takamool/requests/my_requests_sub_screens/rejected_screen.dart';
 
 class MyRequestsScreen extends StatefulWidget {
   @override
