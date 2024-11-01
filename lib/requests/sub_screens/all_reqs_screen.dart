@@ -328,7 +328,7 @@ class AttendanceCard extends StatelessWidget {
           children: [
             IconButton(
               icon: Icon(
-                IconlyBroken.addUser,
+                Icons.refresh,
                 size: 5.w,
               ),
               onPressed: () {
