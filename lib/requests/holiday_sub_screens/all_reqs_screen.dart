@@ -14,13 +14,55 @@ class AllReqsScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            Stack(
+              alignment: AlignmentDirectional.bottomCenter,
+              children: [
+                Container(
+                  width: 93.w,
+                  height: 12.h,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(3.w),
+                      color: HexColor('0C3E9F')),
+                ),
+                Container(
+                  width: 93.w,
+                  height: 11.h,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(3.w),
+                      color: HexColor('E5EEFF')),
+                  child: Padding(
+                    padding: EdgeInsets.all(3.w),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Holidays',
+                          style: TextStyle(
+                              fontSize: 18.sp,
+                              fontFamily: 'cairo',
+                              color: HexColor('0C3E9F')),
+                        ),
+                        Text(
+                          '10 / 20',
+                          style: TextStyle(
+                              fontSize: 18.sp,
+                              fontFamily: 'cairo',
+                              fontWeight: FontWeight.bold,
+                              color: HexColor('0C3E9F')),
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            ),
             HolidayCard(
               startDate: DateTime(2024, 11, 15),
               endDate: DateTime(2024, 11, 18),
               status: 'Approved',
               TotalDays: '3 Days',
               toOperationScreen: () => _navigateToOperationScreen(context,
-                  DateTime(2024, 11, 15), 'Approved', 'Leave In', 'Approved'),
+                  DateTime(2024, 11, 15), DateTime(2024, 11, 18), 'Approved'),
             ),
             HolidayCard(
               startDate: DateTime(2024, 11, 15),
@@ -28,15 +70,15 @@ class AllReqsScreen extends StatelessWidget {
               status: 'Pending',
               TotalDays: '3 Days',
               toOperationScreen: () => _navigateToOperationScreen(context,
-                  DateTime(2024, 11, 10), 'Pending', 'leave-in', 'Pending'),
+                  DateTime(2024, 11, 15), DateTime(2024, 11, 18), 'Pending'),
             ),
             HolidayCard(
-              startDate: DateTime(2024, 11, 15),
-              endDate: DateTime(2024, 11, 18),
+              startDate: DateTime(2024, 11, 21),
+              endDate: DateTime(2024, 11, 23),
               status: 'Rejected',
               TotalDays: '3 Days',
               toOperationScreen: () => _navigateToOperationScreen(context,
-                  DateTime(2024, 11, 25), 'Rejected', 'Leave In', 'Rejected'),
+                  DateTime(2024, 11, 21), DateTime(2024, 11, 23), 'Rejected'),
             ),
           ],
         ),
@@ -44,103 +86,20 @@ class AllReqsScreen extends StatelessWidget {
     );
   }
 
-  void _showRequestDeleteDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) {
-        return Dialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-          ),
-          backgroundColor: Colors.grey.withOpacity(0.7),
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Align(
-                  alignment: Alignment.topRight,
-                  child: IconButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    icon: Icon(Icons.close),
-                  ),
-                ),
-                Text(
-                  'Delete Request ?',
-                  style: TextStyle(fontSize: 16.sp, color: Colors.white),
-                ),
-                SizedBox(height: 2.h),
-                Text(
-                  'Are you sure you want to delete this request?',
-                  style: TextStyle(fontSize: 14.sp, color: Colors.white),
-                ),
-                SizedBox(height: 2.h),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    // Cancel Button
-                    GestureDetector(
-                      child: Container(
-                        width: 30.w,
-                        height: 5.h,
-                        decoration: BoxDecoration(
-                          border: Border.all(color: HexColor('003399')),
-                          borderRadius: BorderRadius.circular(3.h),
-                        ),
-                        child: Center(
-                          child: Text(
-                            'Cancel',
-                            style: TextStyle(
-                              color: HexColor('003399'),
-                            ),
-                          ),
-                        ),
-                      ),
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                    GestureDetector(
-                      child: Container(
-                        width: 30.w,
-                        height: 5.h,
-                        decoration: BoxDecoration(
-                          border: Border.all(color: HexColor('003399')),
-                          borderRadius: BorderRadius.circular(3.h),
-                          color: HexColor('003399'),
-                        ),
-                        child: Center(
-                          child: Text(
-                            'Yes',
-                            style: TextStyle(
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ),
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  void _navigateToOperationScreen(BuildContext context, DateTime date,
-      String description, String TotalDays, String status) {
+  void _navigateToOperationScreen(
+    BuildContext context,
+    DateTime startDate,
+    DateTime endDate,
+    String status,
+  ) {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => OperationScreen(status: status,),
+        builder: (context) => OperationScreen(
+          initialStartDate: startDate,
+          initialEndDate: endDate,
+          status: status,
+        ),
       ),
     );
   }
@@ -227,7 +186,6 @@ class HolidayCard extends StatelessWidget {
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-
                           ],
                         ),
                       ],

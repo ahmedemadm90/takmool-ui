@@ -5,17 +5,13 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:sizer/sizer.dart';
 
 class OperationScreen extends StatefulWidget {
-  final String? initialLeaveType;
   final DateTime? initialStartDate;
   final DateTime? initialEndDate;
-  final String? initialDescription;
-  final String status; // Required status parameter
+  final String status;
 
   OperationScreen({
-    this.initialLeaveType,
     this.initialStartDate,
     this.initialEndDate,
-    this.initialDescription,
     required this.status,
   });
 
@@ -25,10 +21,8 @@ class OperationScreen extends StatefulWidget {
 
 class _OperationScreenState extends State<OperationScreen> {
 
-  String? _selectedLeaveType;
   DateTime? _selectedStartDate;
   DateTime? _selectedEndDate;
-  final TextEditingController _descriptionController = TextEditingController();
   bool _isDialogOpen = false;
   bool _showAdditionalFieldHr = false;
   bool _showAdditionalFieldLead = false;
@@ -36,8 +30,6 @@ class _OperationScreenState extends State<OperationScreen> {
   @override
   void initState() {
     super.initState();
-    _descriptionController.text = widget.initialDescription ?? '';
-    _selectedLeaveType = widget.initialLeaveType;
     _selectedStartDate = widget.initialStartDate; // Initialize start date
     _selectedEndDate = widget.initialEndDate; // Initialize end date
   }
@@ -169,20 +161,12 @@ class _OperationScreenState extends State<OperationScreen> {
   }
 
   void _validateAndSubmit() {
-    if (_selectedLeaveType == null) {
-      _showError("Please select a leave type.");
-      return;
-    }
     if (_selectedStartDate == null) {
       _showError("Please choose a start date.");
       return;
     }
     if (_selectedEndDate == null) {
       _showError("Please choose an end date.");
-      return;
-    }
-    if (_descriptionController.text.isEmpty) {
-      _showError("Please enter a description.");
       return;
     }
     _showRequestDoneDialog();
@@ -227,10 +211,7 @@ class _OperationScreenState extends State<OperationScreen> {
       case 'rejected':
         bgColor = Colors.red;
         textColor = Colors.red;
-        textChild = Icon(
-          Icons.notifications,
-          color: Colors.white,
-        );
+        textChild = Text('!',style: TextStyle(color: Colors.white),);
         break;
       default:
         bgColor = Colors.grey;
@@ -425,32 +406,8 @@ class _OperationScreenState extends State<OperationScreen> {
                       ),
                     ),
                     SizedBox(height: 2.h),
-                    Container(
-                      width: 100.w,
-                      child: DropdownMenu(
-                        label: const Text('Leave Type'),
-                        width: 100.w,
-                        menuStyle: MenuStyle(
-                          backgroundColor: WidgetStateProperty.all<Color>(
-                              HexColor('CCDDFF')),
-                        ),
-                        dropdownMenuEntries: [
-                          DropdownMenuEntry(value: 'value1', label: 'Leave In'),
-                          DropdownMenuEntry(
-                              value: 'value2', label: 'Leave Out'),
-                        ],
-                        onSelected: (value) {
-                          setState(() {
-                            _selectedLeaveType =
-                                value; // Update selected leave type
-                          });
-                        },
-                      ),
-                    ),
-                    SizedBox(height: 2.h),
                     TextFormField(
                       maxLines: 5,
-                      controller: _descriptionController,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
                           // Use OutlineInputBorder

@@ -81,7 +81,7 @@ class _HolidayScreenState extends State<HolidayScreen> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         title: Text(
-          'Attendance',
+          'Holidays',
           style: TextStyle(
             fontFamily: 'Cairo',
             color: Colors.black,
