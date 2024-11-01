@@ -14,6 +14,11 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   bool _isObscureConfirmPassword = true;
   bool _isDialogOpen = false;
 
+  // Controllers for input fields
+  final TextEditingController _oldPasswordController = TextEditingController();
+  final TextEditingController _newPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController = TextEditingController();
+
   // Method to toggle password visibility
   void _togglePasswordVisibility(bool isOldPassword, bool isNewPassword) {
     setState(() {
@@ -25,6 +30,49 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
         _isObscureConfirmPassword = !_isObscureConfirmPassword;
       }
     });
+  }
+
+  // Method to validate the inputs
+  bool _validateInputs() {
+    if (_oldPasswordController.text.isEmpty) {
+      _showErrorDialog('Please enter your old password.');
+      return false;
+    }
+    if (_newPasswordController.text.isEmpty) {
+      _showErrorDialog('Please enter your new password.');
+      return false;
+    }
+    if (_confirmPasswordController.text.isEmpty) {
+      _showErrorDialog('Please confirm your new password.');
+      return false;
+    }
+    if (_newPasswordController.text != _confirmPasswordController.text) {
+      _showErrorDialog('New password and confirm password do not match.');
+      return false;
+    }
+    return true;
+  }
+
+  // Method to show error messages in a dialog
+  void _showErrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Error'),
+          backgroundColor: HexColor('E5EEFF'),
+          content: Text(message),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   // Method to show password changed dialog
@@ -87,8 +135,10 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
     required String labelText,
     required bool isObscure,
     required Function() toggleVisibility,
+    required TextEditingController controller, // Added controller parameter
   }) {
     return TextFormField(
+      controller: controller, // Assigning the controller
       decoration: InputDecoration(
         labelText: labelText,
         labelStyle: TextStyle(color: HexColor('#6B7280')),
@@ -144,6 +194,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
               labelText: 'Old Password',
               isObscure: _isObscureOldPassword,
               toggleVisibility: () => _togglePasswordVisibility(true, false),
+              controller: _oldPasswordController, // Pass the controller
             ),
             SizedBox(height: 2.h),
             // New password field with show/hide functionality
@@ -151,6 +202,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
               labelText: 'New Password',
               isObscure: _isObscureNewPassword,
               toggleVisibility: () => _togglePasswordVisibility(false, true),
+              controller: _newPasswordController, // Pass the controller
             ),
             SizedBox(height: 2.h),
             // Confirm password field with show/hide functionality
@@ -158,11 +210,16 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
               labelText: 'Confirm Password',
               isObscure: _isObscureConfirmPassword,
               toggleVisibility: () => _togglePasswordVisibility(false, false),
+              controller: _confirmPasswordController, // Pass the controller
             ),
             SizedBox(height: 4.h),
             // Change password button
             ElevatedButton(
-              onPressed: _showPasswordChangedDialog,
+              onPressed: () {
+                if (_validateInputs()) {
+                  _showPasswordChangedDialog(); // Only show dialog if validation passes
+                }
+              },
               style: ElevatedButton.styleFrom(
                 backgroundColor: HexColor('#003087'),
                 minimumSize: Size(double.infinity, 7.h),
