@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
-import 'package:hexcolor/hexcolor.dart';
 import 'package:sizer/sizer.dart';
 import 'package:intl/intl.dart';
 import 'package:takamool/requests/holiday_sub_screens/show_request_data.dart';
@@ -14,48 +13,6 @@ class AllReqsScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Stack(
-              alignment: AlignmentDirectional.bottomCenter,
-              children: [
-                Container(
-                  width: 93.w,
-                  height: 12.h,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(3.w),
-                      color: HexColor('0C3E9F')),
-                ),
-                Container(
-                  width: 93.w,
-                  height: 11.h,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(3.w),
-                      color: HexColor('E5EEFF')),
-                  child: Padding(
-                    padding: EdgeInsets.all(3.w),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Holidays',
-                          style: TextStyle(
-                              fontSize: 18.sp,
-                              fontFamily: 'cairo',
-                              color: HexColor('0C3E9F')),
-                        ),
-                        Text(
-                          '10 / 20',
-                          style: TextStyle(
-                              fontSize: 18.sp,
-                              fontFamily: 'cairo',
-                              fontWeight: FontWeight.bold,
-                              color: HexColor('0C3E9F')),
-                        ),
-                      ],
-                    ),
-                  ),
-                )
-              ],
-            ),
             HolidayCard(
               startDate: DateTime(2024, 11, 15),
               endDate: DateTime(2024, 11, 18),

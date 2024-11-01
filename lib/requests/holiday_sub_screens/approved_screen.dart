@@ -10,7 +10,9 @@ class ApprovedScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text('Approved'),
+            Center(
+              child: Text('data'),
+            )
           ],
         ),
       ),
