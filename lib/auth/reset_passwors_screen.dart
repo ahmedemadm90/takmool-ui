@@ -9,17 +9,16 @@ class ResetPasswordScreen extends StatefulWidget {
 }
 
 class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
-  bool _isObscureOldPassword = true; // Toggle for old password visibility
+  bool _isObscureOldPassword = true;
   bool _isObscureNewPassword = true;
   bool _isObscureConfirmPassword = true;
-  bool _isDialogOpen = false;
 
-  // Controllers for input fields
   final TextEditingController _oldPasswordController = TextEditingController();
   final TextEditingController _newPasswordController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
 
-  // Method to toggle password visibility
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   void _togglePasswordVisibility(bool isOldPassword, bool isNewPassword) {
     setState(() {
       if (isOldPassword) {
@@ -32,113 +31,44 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
     });
   }
 
-  // Method to validate the inputs
+  void _showSnackBar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: Colors.red,
+        content: Text(message),
+        duration: Duration(seconds: 2),
+      ),
+    );
+  }
+
   bool _validateInputs() {
     if (_oldPasswordController.text.isEmpty) {
-      _showErrorDialog('Please enter your old password.');
+      _showSnackBar('Please enter your old password.');
       return false;
     }
     if (_newPasswordController.text.isEmpty) {
-      _showErrorDialog('Please enter your new password.');
+      _showSnackBar('Please enter your new password.');
       return false;
     }
     if (_confirmPasswordController.text.isEmpty) {
-      _showErrorDialog('Please confirm your new password.');
+      _showSnackBar('Please confirm your new password.');
       return false;
     }
     if (_newPasswordController.text != _confirmPasswordController.text) {
-      _showErrorDialog('New password and confirm password do not match.');
+      _showSnackBar('New password and confirm password do not match.');
       return false;
     }
     return true;
   }
 
-  // Method to show error messages in a dialog
-  void _showErrorDialog(String message) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text('Error'),
-          backgroundColor: HexColor('E5EEFF'),
-          content: Text(message),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('OK'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  // Method to show password changed dialog
-  void _showPasswordChangedDialog() {
-    setState(() {
-      _isDialogOpen = true;
-    });
-
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) {
-        return Dialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-          ),
-          backgroundColor: Colors.grey.withOpacity(0.7),
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Align(
-                  alignment: Alignment.topRight,
-                  child: IconButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    icon: Icon(Icons.close),
-                  ),
-                ),
-                Image(image: AssetImage('assets/images/done.png')),
-                SizedBox(height: 2.h),
-                Text(
-                  'Password Changed',
-                  style: TextStyle(fontSize: 16.sp, color: Colors.white),
-                ),
-                SizedBox(height: 2.h),
-              ],
-            ),
-          ),
-        );
-      },
-    ).then((_) {
-      setState(() {
-        _isDialogOpen = false;
-      });
-    });
-
-    // Automatically close the dialog after 2 seconds
-    Future.delayed(Duration(seconds: 2), () {
-      if (_isDialogOpen) {
-        Navigator.pop(context); // Close the dialog
-      }
-    });
-  }
-
-  // Method to build a password field
   Widget _buildPasswordField({
     required String labelText,
     required bool isObscure,
     required Function() toggleVisibility,
-    required TextEditingController controller, // Added controller parameter
+    required TextEditingController controller,
   }) {
     return TextFormField(
-      controller: controller, // Assigning the controller
+      controller: controller,
       decoration: InputDecoration(
         labelText: labelText,
         labelStyle: TextStyle(color: HexColor('#6B7280')),
@@ -184,55 +114,54 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
           icon: Icon(IconlyBroken.arrowLeft, color: Colors.black),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            SizedBox(height: 2.h),
-            // Old password field with show/hide functionality
-            _buildPasswordField(
-              labelText: 'Old Password',
-              isObscure: _isObscureOldPassword,
-              toggleVisibility: () => _togglePasswordVisibility(true, false),
-              controller: _oldPasswordController, // Pass the controller
-            ),
-            SizedBox(height: 2.h),
-            // New password field with show/hide functionality
-            _buildPasswordField(
-              labelText: 'New Password',
-              isObscure: _isObscureNewPassword,
-              toggleVisibility: () => _togglePasswordVisibility(false, true),
-              controller: _newPasswordController, // Pass the controller
-            ),
-            SizedBox(height: 2.h),
-            // Confirm password field with show/hide functionality
-            _buildPasswordField(
-              labelText: 'Confirm Password',
-              isObscure: _isObscureConfirmPassword,
-              toggleVisibility: () => _togglePasswordVisibility(false, false),
-              controller: _confirmPasswordController, // Pass the controller
-            ),
-            SizedBox(height: 4.h),
-            // Change password button
-            ElevatedButton(
-              onPressed: () {
-                if (_validateInputs()) {
-                  _showPasswordChangedDialog(); // Only show dialog if validation passes
-                }
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: HexColor('#003087'),
-                minimumSize: Size(double.infinity, 7.h),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30.w),
+      body: Form(
+        key: _formKey,
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              SizedBox(height: 2.h),
+              _buildPasswordField(
+                labelText: 'Old Password',
+                isObscure: _isObscureOldPassword,
+                toggleVisibility: () => _togglePasswordVisibility(true, false),
+                controller: _oldPasswordController,
+              ),
+              SizedBox(height: 2.h),
+              _buildPasswordField(
+                labelText: 'New Password',
+                isObscure: _isObscureNewPassword,
+                toggleVisibility: () => _togglePasswordVisibility(false, true),
+                controller: _newPasswordController,
+              ),
+              SizedBox(height: 2.h),
+              _buildPasswordField(
+                labelText: 'Confirm Password',
+                isObscure: _isObscureConfirmPassword,
+                toggleVisibility: () => _togglePasswordVisibility(false, false),
+                controller: _confirmPasswordController,
+              ),
+              SizedBox(height: 4.h),
+              ElevatedButton(
+                onPressed: () {
+                  if (_validateInputs()) {
+                    _showSnackBar('Password changed successfully');
+                  }
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: HexColor('#003087'),
+                  minimumSize: Size(double.infinity, 7.h),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30.w),
+                  ),
+                ),
+                child: Text(
+                  'Change Password',
+                  style: TextStyle(fontSize: 16.sp, color: Colors.white),
                 ),
               ),
-              child: Text(
-                'Change Password',
-                style: TextStyle(fontSize: 16.sp, color: Colors.white),
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
