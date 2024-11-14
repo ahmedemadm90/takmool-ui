@@ -17,6 +17,10 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   final TextEditingController _newPasswordController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
 
+  String? _oldPasswordError;
+  String? _newPasswordError;
+  String? _confirmPasswordError;
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   void _togglePasswordVisibility(bool isOldPassword, bool isNewPassword) {
@@ -31,34 +35,33 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
     });
   }
 
-  void _showSnackBar(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        backgroundColor: Colors.red,
-        content: Text(message),
-        duration: Duration(seconds: 2),
-      ),
-    );
-  }
-
   bool _validateInputs() {
-    if (_oldPasswordController.text.isEmpty) {
-      _showSnackBar('Please enter your old password.');
-      return false;
-    }
-    if (_newPasswordController.text.isEmpty) {
-      _showSnackBar('Please enter your new password.');
-      return false;
-    }
-    if (_confirmPasswordController.text.isEmpty) {
-      _showSnackBar('Please confirm your new password.');
-      return false;
-    }
-    if (_newPasswordController.text != _confirmPasswordController.text) {
-      _showSnackBar('New password and confirm password do not match.');
-      return false;
-    }
-    return true;
+    bool isValid = true;
+    setState(() {
+      // Reset all errors first
+      _oldPasswordError = null;
+      _newPasswordError = null;
+      _confirmPasswordError = null;
+
+      if (_oldPasswordController.text.isEmpty) {
+        _oldPasswordError = 'Please enter your old password';
+        isValid = false;
+      }
+
+      if (_newPasswordController.text.isEmpty) {
+        _newPasswordError = 'Please enter your new password';
+        isValid = false;
+      }
+
+      if (_confirmPasswordController.text.isEmpty) {
+        _confirmPasswordError = 'Please confirm your new password';
+        isValid = false;
+      } else if (_newPasswordController.text != _confirmPasswordController.text) {
+        _confirmPasswordError = 'Passwords do not match';
+        isValid = false;
+      }
+    });
+    return isValid;
   }
 
   Widget _buildPasswordField({
@@ -66,33 +69,55 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
     required bool isObscure,
     required Function() toggleVisibility,
     required TextEditingController controller,
+    String? errorText,
   }) {
     return TextFormField(
       controller: controller,
       decoration: InputDecoration(
         labelText: labelText,
-        labelStyle: TextStyle(color: HexColor('#6B7280')),
+        labelStyle: TextStyle(
+          color: errorText != null ? Colors.red : HexColor('#6B7280'),
+        ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(1.h),
           borderSide: BorderSide(color: HexColor('#D1D5DB')),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(1.h),
-          borderSide: BorderSide(color: HexColor('#D1D5DB')),
+          borderSide: BorderSide(
+            color: errorText != null ? Colors.red : HexColor('#D1D5DB'),
+          ),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(1.h),
-          borderSide: BorderSide(color: HexColor('#003087')),
+          borderSide: BorderSide(
+            color: errorText != null ? Colors.red : HexColor('#003087'),
+          ),
+        ),
+        errorText: errorText,
+        errorStyle: TextStyle(
+          color: Colors.red,
+          fontSize: 12.sp,
         ),
         suffixIcon: IconButton(
           icon: Icon(
             isObscure ? IconlyBroken.show : IconlyBroken.hide,
-            color: HexColor('#6B7280'),
+            color: errorText != null ? Colors.red : HexColor('#6B7280'),
           ),
           onPressed: toggleVisibility,
         ),
       ),
       obscureText: isObscure,
+      onChanged: (value) {
+        // Clear error when user starts typing
+        if (errorText != null) {
+          setState(() {
+            if (controller == _oldPasswordController) _oldPasswordError = null;
+            if (controller == _newPasswordController) _newPasswordError = null;
+            if (controller == _confirmPasswordController) _confirmPasswordError = null;
+          });
+        }
+      },
     );
   }
 
@@ -126,6 +151,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 isObscure: _isObscureOldPassword,
                 toggleVisibility: () => _togglePasswordVisibility(true, false),
                 controller: _oldPasswordController,
+                errorText: _oldPasswordError,
               ),
               SizedBox(height: 2.h),
               _buildPasswordField(
@@ -133,6 +159,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 isObscure: _isObscureNewPassword,
                 toggleVisibility: () => _togglePasswordVisibility(false, true),
                 controller: _newPasswordController,
+                errorText: _newPasswordError,
               ),
               SizedBox(height: 2.h),
               _buildPasswordField(
@@ -140,12 +167,19 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 isObscure: _isObscureConfirmPassword,
                 toggleVisibility: () => _togglePasswordVisibility(false, false),
                 controller: _confirmPasswordController,
+                errorText: _confirmPasswordError,
               ),
               SizedBox(height: 4.h),
               ElevatedButton(
                 onPressed: () {
                   if (_validateInputs()) {
-                    _showSnackBar('Password changed successfully');
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        backgroundColor: Colors.green,
+                        content: Text('Password changed successfully'),
+                        duration: Duration(seconds: 2),
+                      ),
+                    );
                   }
                 },
                 style: ElevatedButton.styleFrom(
