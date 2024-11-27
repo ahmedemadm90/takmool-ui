@@ -19,6 +19,7 @@ class AllReqsScreen extends StatelessWidget {
               endDate: DateTime(2024, 4, 15),
               status: 'Approved',
               type: 'Loss attendance',
+              reason: 'Travel',
               onDelete: () => _showRequestDeleteDialog(context),
               onEdit: () => _navigateToOperationScreen(context,
                   DateTime(2024, 4, 15), 'Approved', 'Leave In', 'Approved'),
@@ -28,6 +29,7 @@ class AllReqsScreen extends StatelessWidget {
               endDate: DateTime(2024, 4, 15),
               status: 'Pending',
               type: 'Leave In',
+              reason: 'Travel',
               onDelete: () => _showRequestDeleteDialog(context),
               onEdit: () => _navigateToOperationScreen(context,
                   DateTime(2024, 5, 10), 'Pending', 'leave-in', 'Pending'),
@@ -37,6 +39,7 @@ class AllReqsScreen extends StatelessWidget {
               endDate: DateTime(2024, 4, 15),
               status: 'Rejected',
               type: 'Holiday request',
+              reason: 'travel',
               onDelete: () => _showRequestDeleteDialog(context),
               onEdit: () => _navigateToOperationScreen(context,
                   DateTime(2024, 6, 25), 'Rejected', 'Leave In', 'Rejected'),
@@ -154,6 +157,7 @@ class AttendanceCard extends StatelessWidget {
   final DateTime endDate;
   final String status;
   final String type;
+  final String reason;
   final VoidCallback onDelete;
   final VoidCallback onEdit;
 
@@ -162,6 +166,7 @@ class AttendanceCard extends StatelessWidget {
     required this.endDate,
     required this.status,
     required this.type,
+    required this.reason,
     required this.onDelete,
     required this.onEdit,
   });
@@ -243,28 +248,87 @@ class AttendanceCard extends StatelessWidget {
                 Divider(height: 20, color: Colors.grey[300]),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    Flexible(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Type',
+                            style: TextStyle(
+                              color: Colors.grey[600],
+                              fontSize: 12,
+                            ),
+                          ),
+                          SizedBox(height: 4),
+                          Text(
+                            type,
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                          ),
+                        ],
+                      ),
+                    ),
+                    Flexible(
+                      flex: 3,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Reason',
+                            style: TextStyle(
+                              color: Colors.grey[600],
+                              fontSize: 12,
+                            ),
+                          ),
+                          SizedBox(height: 4),
+                          Text(
+                            reason,
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                          ),
+                        ],
+                      ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      mainAxisSize: MainAxisSize.min,
                       children: [
-                        Text(
-                          'Type',
-                          style: TextStyle(
-                            color: Colors.grey[600],
-                            fontSize: 12,
+                        if (status == 'Pending')
+                          IconButton(
+                            icon: Icon(
+                              IconlyBroken.delete,
+                              size: 4.5.w, // Slightly reduced size
+                            ),
+                            onPressed: onDelete,
                           ),
-                        ),
-                        SizedBox(height: 4),
-                        Text(
-                          type,
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
+                        if (status == 'Pending')
+                          IconButton(
+                            icon: Icon(
+                              IconlyBroken.edit,
+                              size: 4.5.w, // Slightly reduced size
+                            ),
+                            onPressed: onEdit,
                           ),
-                        ),
+                        if (status == 'Approved' || status == 'Rejected')
+                          IconButton(
+                            icon: Icon(
+                              IconlyBroken.document,
+                              size: 4.5.w, // Slightly reduced size
+                            ),
+                            onPressed: onEdit,
+                          ),
                       ],
                     ),
-                    _getStatusIcons(status),
                   ],
                 ),
               ],
